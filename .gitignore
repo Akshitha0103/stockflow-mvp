@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+*.db
+instance/
+.DS_Store
+.env.*
+!.env.example

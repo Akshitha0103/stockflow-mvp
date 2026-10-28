@@ -1,0 +1,19 @@
+{% extends "base.html" %}{% block title %}Overview{% endblock %}
+{% block content %}
+<div class="page-heading"><div><div class="eyebrow">OVERVIEW</div><h1>Good to see you.</h1><p>Here's what's happening with your inventory today.</p></div><a href="{{ url_for('product_new') }}" class="btn btn-primary"><i class="bi bi-plus-lg me-2"></i>Add product</a></div>
+<div class="stats-grid">
+  <div class="stat-card"><div class="stat-top"><span>Total products</span><span class="stat-icon purple"><i class="bi bi-boxes"></i></span></div><div class="stat-number">{{ stats.product_count }}</div><div class="stat-foot"><span class="tiny-dot purple-dot"></span> Products in your catalog</div></div>
+  <div class="stat-card"><div class="stat-top"><span>Units in stock</span><span class="stat-icon blue"><i class="bi bi-layers"></i></span></div><div class="stat-number">{{ "{:,}".format(stats.total_units) }}</div><div class="stat-foot"><span class="tiny-dot blue-dot"></span> Total available quantity</div></div>
+  <div class="stat-card"><div class="stat-top"><span>Low-stock items</span><span class="stat-icon amber"><i class="bi bi-exclamation-triangle"></i></span></div><div class="stat-number">{{ low_stock|length }}<span class="stat-sub"> needs attention</span></div><div class="stat-foot"><span class="tiny-dot amber-dot"></span> At or below threshold</div></div>
+  <div class="stat-card"><div class="stat-top"><span>Retail stock value</span><span class="stat-icon green"><i class="bi bi-currency-rupee"></i></span></div><div class="stat-number">₹{{ "{:,.2f}".format(stats.retail_value) }}</div><div class="stat-foot"><span class="tiny-dot green-dot"></span> Based on selling prices</div></div>
+</div>
+<div class="content-grid">
+  <section class="panel low-stock-panel"><div class="panel-heading"><div><h2>Low-stock items <span class="count-pill">{{ low_stock|length }}</span></h2><p>Products that may need replenishing.</p></div><a class="text-link" href="{{ url_for('products') }}">View all <i class="bi bi-arrow-up-right"></i></a></div>
+  {% if low_stock %}<div class="table-responsive"><table class="table app-table align-middle"><thead><tr><th>PRODUCT</th><th>SKU</th><th>IN STOCK</th><th>THRESHOLD</th><th>STATUS</th></tr></thead><tbody>{% for p in low_stock %}<tr><td><div class="product-cell"><span class="product-icon"><i class="bi bi-box"></i></span><div><strong>{{ p.name }}</strong><small>{{ p.description or 'Inventory item' }}</small></div></div></td><td class="sku-cell">{{ p.sku }}</td><td><strong class="quantity-low">{{ p.quantity }}</strong></td><td>{{ p.effective_threshold }}</td><td><span class="status-badge low"><span></span>Low stock</span></td></tr>{% endfor %}</tbody></table></div>{% else %}<div class="empty-state"><div class="empty-icon"><i class="bi bi-check2-circle"></i></div><h3>You're all stocked up</h3><p>No products are currently at or below their low-stock threshold.</p></div>{% endif %}
+  </section>
+  <section class="panel recent-panel"><div class="panel-heading"><div><h2>Recently updated</h2><p>Your latest product changes.</p></div><a class="icon-link" href="{{ url_for('products') }}"><i class="bi bi-arrow-up-right"></i></a></div>
+  {% if recent %}<div class="recent-list">{% for p in recent %}<a class="recent-item" href="{{ url_for('product_edit', product_id=p.id) }}"><span class="recent-product-icon"><i class="bi bi-box-seam"></i></span><span class="recent-info"><strong>{{ p.name }}</strong><small>{{ p.sku }}</small></span><span class="recent-qty">{{ p.quantity }} <small>units</small></span></a>{% endfor %}</div>{% else %}<div class="empty-mini"><i class="bi bi-box-seam"></i><p>Your products will show up here.</p><a href="{{ url_for('product_new') }}">Add your first product</a></div>{% endif %}
+  <div class="quick-tip"><i class="bi bi-lightbulb"></i><div><strong>Quick tip</strong><p>Set a threshold for each product or use your workspace default in Settings.</p></div></div>
+  </section>
+</div>
+{% endblock %}

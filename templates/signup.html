@@ -1,0 +1,12 @@
+{% extends "base.html" %}{% block title %}Create workspace{% endblock %}
+{% block auth_content %}
+<div class="form-heading"><div class="eyebrow">GET STARTED</div><h2>Create your workspace</h2><p>A few details and you'll be ready to track your stock.</p></div>
+<form method="post" class="auth-form">
+  <div class="mb-3"><label class="form-label" for="organization_name">Organization name</label><div class="input-icon"><i class="bi bi-building"></i><input class="form-control" id="organization_name" name="organization_name" placeholder="e.g. Acme Store" required maxlength="100" value="{{ request.form.get('organization_name','') }}"></div></div>
+  <div class="mb-3"><label class="form-label" for="email">Work email</label><div class="input-icon"><i class="bi bi-envelope"></i><input class="form-control" id="email" type="email" name="email" placeholder="you@company.com" required autocomplete="email" value="{{ request.form.get('email','') }}"></div></div>
+  <div class="mb-3"><label class="form-label" for="password">Password <span class="label-note">8+ characters</span></label><div class="input-icon"><i class="bi bi-lock"></i><input class="form-control" id="password" type="password" name="password" placeholder="Create a strong password" required minlength="8" autocomplete="new-password"><button type="button" class="password-toggle" data-toggle-password="password" aria-label="Show password"><i class="bi bi-eye"></i></button></div></div>
+  <div class="mb-4"><label class="form-label" for="confirm_password">Confirm password</label><div class="input-icon"><i class="bi bi-shield-check"></i><input class="form-control" id="confirm_password" type="password" name="confirm_password" placeholder="Enter password again" required minlength="8" autocomplete="new-password"></div></div>
+  <button class="btn btn-primary w-100 btn-lg" type="submit">Create workspace <i class="bi bi-arrow-right ms-1"></i></button>
+</form>
+<div class="auth-switch">Already have an account? <a href="{{ url_for('login') }}">Sign in</a></div>
+{% endblock %}
